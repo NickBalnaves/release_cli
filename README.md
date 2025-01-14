@@ -37,14 +37,13 @@ Deploy an Android app to the Google Play Store.
 
 **Required Options:**
 
-- `--serviceAccountPath`: Path to the service account JSON file.
+- `--serviceAccount`: Service account JSON.
 - `--buildOptions`: Build options for the app.
 - `--storePassword`: Password for the keystore.
 - `--keyPassword`: Password for the key in the keystore.
 - `--keyAlias`: Alias for the key in the keystore.
 - `--storeFile`: Path to the keystore file.
 - `--flutterVersion`: Version of Flutter to use.
-- `--releaseNotes`: Release notes for the deployment.
 
 ##### 2. `android firebase_app_distribution`
 
@@ -53,14 +52,13 @@ Deploy an Android app to Firebase App Distribution.
 **Required Options:**
 
 - `--firebaseAppId`: Firebase app ID.
-- `--serviceAccountPath`: Path to the Firebase service account.
+- `--serviceAccount`: Firebase service account.
 - `--buildOptions`: Build options for the app.
 - `--storePassword`: Password for the keystore.
 - `--keyPassword`: Password for the key in the keystore.
 - `--keyAlias`: Alias for the key in the keystore.
 - `--storeFile`: Path to the keystore file.
 - `--testerGroups`: Tester groups to invite for app testing.
-- `--releaseNotes`: Release notes for the deployment.
 
 ### iOS
 
@@ -81,7 +79,6 @@ Deploy an iOS app to the Apple App Store.
 - `--gitUrl`: URL to the app's Git repository.
 - `--buildOptions`: Build options for the app.
 - `--flutterVersion`: Version of Flutter to use.
-- `--releaseNotes`: Release notes for the deployment.
 
 ##### 2. `ios firebase_app_distribution`
 
@@ -90,7 +87,7 @@ Deploy an iOS app to Firebase App Distribution.
 **Required Options:**
 
 - `--firebaseAppId`: Firebase app ID.
-- `--serviceAccountPath`: Path to the Firebase service account.
+- `--serviceAccount`: Firebase service account.
 - `--appId`: The iOS app ID.
 - `--issuerId`: Apple Developer Issuer ID.
 - `--keyId`: Apple Developer Key ID.
@@ -98,7 +95,6 @@ Deploy an iOS app to Firebase App Distribution.
 - `--gitUrl`: URL to the app's Git repository.
 - `--buildOptions`: Build options for the app.
 - `--testerGroups`: Tester groups to invite for app testing.
-- `--releaseNotes`: Release notes for the deployment.
 
 ### Web
 

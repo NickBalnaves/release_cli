@@ -1,3 +1,7 @@
+## 1.0.1
+
+* docs: update references to service account path.
+
 ## 1.0.0
 
-* Initial release.
+* chore: initial release.
