@@ -59,7 +59,7 @@ abstract final class IOSUtil {
     });
     process.stderr
         .transform(const SystemEncoding().decoder)
-        .listen((final data) => stdout.write(data));
+        .listen((final data) => stderr.write(data));
 
     final exitCode = await process.exitCode;
     if (exitCode != 0) {
@@ -67,7 +67,7 @@ abstract final class IOSUtil {
     }
 
     if (buildLocation == null) {
-      stdout.writeln('Build location not found.');
+      stderr.writeln('Build location not found.');
       exit(1);
     }
 

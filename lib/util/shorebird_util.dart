@@ -1,7 +1,7 @@
 import 'dart:io';
 
 abstract final class ShorebirdUtil {
-  static Future<List<String>> patchOrBuildPaths({
+  static Future<void> patch({
     required final String buildName,
     required final int buildNumber,
     required final String platform,
@@ -25,68 +25,78 @@ abstract final class ShorebirdUtil {
     );
 
     final shorebirdPatchProcessExitCode = shorebirdPatchProcess.exitCode;
-    final buildLocations = <String>[];
+    stdout.writeln(shorebirdPatchProcess.stdout);
     if (shorebirdPatchProcessExitCode != 0) {
-      stdout.writeln(
-        "Couldn't patch shorebird build. Building a new one...",
-      );
-      final shorebirdReleaseProcess = await Process.start(
-        'shorebird',
-        [
-          'release',
-          '--platforms=$platform',
-          '--build-name=$buildName',
-          '--build-number=${buildNumber + 1}',
-          '--flutter-version=$flutterVersion',
-          '--',
-          if (platform.contains('ios'))
-            '--export-options-plist=ios/exportOptions.plist',
-          ...buildOptions.split(' '),
-        ],
-      );
+      stderr.writeln("Couldn't patch shorebird build.");
+      exit(1);
+    }
+  }
 
-      shorebirdReleaseProcess.stdout
-          .transform(const SystemEncoding().decoder)
-          .listen((final data) {
-        stdout.write(data);
-        final matches = RegExp(r'(/[\w/.-]+\.(aab|ipa))')
-            .allMatches(data)
-            .map((final match) => match.group(1));
-        for (final match in matches) {
-          if (match != null) {
-            buildLocations.add(match);
-          }
+  static Future<List<String>> release({
+    required final String buildName,
+    required final int buildNumber,
+    required final String platform,
+    required final String buildOptions,
+    required final String flutterVersion,
+  }) async {
+    stdout.writeln('Starting shorebird build for $buildName+$buildNumber...');
+
+    final buildLocations = <String>[];
+    final shorebirdReleaseProcess = await Process.start(
+      'shorebird',
+      [
+        'release',
+        '--platforms=$platform',
+        '--build-name=$buildName',
+        '--build-number=${buildNumber + 1}',
+        '--flutter-version=$flutterVersion',
+        '--',
+        if (platform.contains('ios'))
+          '--export-options-plist=ios/exportOptions.plist',
+        ...buildOptions.split(' '),
+      ],
+    );
+
+    shorebirdReleaseProcess.stdout
+        .transform(const SystemEncoding().decoder)
+        .listen((final data) {
+      stdout.write(data);
+      final matches = RegExp(r'(/[\w/.-]+\.(aab|ipa))')
+          .allMatches(data)
+          .map((final match) => match.group(1));
+      for (final match in matches) {
+        if (match != null) {
+          buildLocations.add(match);
         }
-      });
-      shorebirdReleaseProcess.stderr
-          .transform(const SystemEncoding().decoder)
-          .listen((final data) => stdout.write(data));
+      }
+    });
+    shorebirdReleaseProcess.stderr
+        .transform(const SystemEncoding().decoder)
+        .listen((final data) => stderr.write(data));
 
-      final shorebirdReleaseProcessExitCode =
-          await shorebirdReleaseProcess.exitCode;
-      if (shorebirdReleaseProcessExitCode != 0) {
+    final shorebirdReleaseProcessExitCode =
+        await shorebirdReleaseProcess.exitCode;
+    if (shorebirdReleaseProcessExitCode != 0) {
+      exit(1);
+    }
+    if (buildLocations.isEmpty) {
+      stdout.writeln(
+        'No build location in output. Looking for it in build folder...',
+      );
+      final buildFiles = Directory('build').listSync(recursive: true).where(
+            (final file) =>
+                (platform.contains('ios') && file.path.contains('.ipa')) ||
+                (platform.contains('android') && file.path.contains('.aab')),
+          );
+      if (buildFiles.isEmpty) {
+        stderr.writeln('No build files found in build folder.');
         exit(1);
       }
-      if (buildLocations.isEmpty) {
-        stdout.writeln(
-          'No build location in output. Looking for it in build folder...',
-        );
-        final buildFiles = Directory('build').listSync(recursive: true).where(
-              (final file) =>
-                  (platform.contains('ios') && file.path.contains('.ipa')) ||
-                  (platform.contains('android') && file.path.contains('.aab')),
-            );
-        if (buildFiles.isEmpty) {
-          stdout.writeln('No build files found in build folder.');
-          exit(1);
-        }
-        stdout.writeln(
-          'Found build files ${buildFiles.map((final file) => file.path)}',
-        );
-        buildLocations.addAll(buildFiles.map((final file) => file.path));
-      }
+      stdout.writeln(
+        'Found build files ${buildFiles.map((final file) => file.path)}',
+      );
+      buildLocations.addAll(buildFiles.map((final file) => file.path));
     }
-    stdout.writeln(shorebirdPatchProcess.stdout);
 
     return buildLocations;
   }

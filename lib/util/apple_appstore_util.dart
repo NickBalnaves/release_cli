@@ -152,7 +152,7 @@ class AppleAppStoreUtil {
     ]);
 
     if (result.exitCode != 0) {
-      stdout.writeln(result.stderr);
+      stderr.writeln(result.stderr);
       exit(1);
     }
     stdout.writeln('Uploaded to TestFlight successfully.');

@@ -92,12 +92,13 @@ class FirebaseAppDistributionUtil {
             releaseId = (release['name'] as String?)?.split('/').last;
             stdout.writeln('Release completed successfully');
             if (releaseId == null) {
-              stdout.writeln('Release ID not found.');
+              stderr.writeln('Release ID not found.');
               exit(1);
             }
             stdout.writeln('Release ID: $releaseId');
           } else if (error != null) {
-            stdout.writeln('Error: ${error['message']}');
+            stderr.writeln('Error: ${error['message']}');
+            exit(1);
           }
           break;
         }
@@ -115,7 +116,7 @@ class FirebaseAppDistributionUtil {
     if (latestCommitResult.exitCode == 0) {
       stdout.writeln('Latest commit message: ${latestCommitResult.stdout}');
     } else {
-      stdout.writeln(
+      stderr.writeln(
         'Error fetching commit message: ${latestCommitResult.stderr}',
       );
     }

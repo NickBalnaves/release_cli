@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import '../util/android_util.dart';
+import '../util/git_util.dart';
 import '../util/google_play_store_util.dart';
 import '../util/shorebird_util.dart';
 
@@ -79,7 +80,19 @@ class AndroidGooglePlayCommand extends Command {
     final buildName = release.buildName;
     final buildNumber = release.buildNumber;
 
-    final newBuildPaths = await ShorebirdUtil.patchOrBuildPaths(
+    if (!await GitUtil.hasPubspecVersionChanged()) {
+      await ShorebirdUtil.patch(
+        buildName: buildName,
+        buildNumber: buildNumber,
+        platform: 'ios',
+        buildOptions: buildOptions,
+        flutterVersion: flutterVersion,
+      );
+
+      return;
+    }
+
+    final newBuildPaths = await ShorebirdUtil.release(
       buildName: buildName,
       buildNumber: buildNumber,
       platform: 'android',

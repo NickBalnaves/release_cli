@@ -59,7 +59,7 @@ abstract final class AndroidUtil {
     }
 
     if (buildLocation == null) {
-      stdout.writeln('Build location not found.');
+      stderr.writeln('Build location not found.');
       exit(1);
     }
 

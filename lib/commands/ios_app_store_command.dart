@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import '../util/apple_appstore_util.dart';
+import '../util/git_util.dart';
 import '../util/shorebird_util.dart';
 
 class IOSAppStoreCommand extends Command {
@@ -76,7 +77,31 @@ class IOSAppStoreCommand extends Command {
     final buildName = release.buildName;
     final buildNumber = release.buildNumber;
 
-    final newBuildPaths = await ShorebirdUtil.patchOrBuildPaths(
+    final latestCommitResult = await Process.run(
+      'git',
+      ["show HEAD -- pubspec.yaml | grep '^+version: '"],
+    );
+
+    if (latestCommitResult.exitCode == 0) {
+      stdout.writeln('Latest commit message: ${latestCommitResult.stdout}');
+    } else {
+      stdout.writeln(
+        'Error fetching commit message: ${latestCommitResult.stderr}',
+      );
+    }
+    if (!await GitUtil.hasPubspecVersionChanged()) {
+      await ShorebirdUtil.patch(
+        buildName: buildName,
+        buildNumber: buildNumber,
+        platform: 'ios',
+        buildOptions: buildOptions,
+        flutterVersion: flutterVersion,
+      );
+
+      return;
+    }
+
+    final newBuildPaths = await ShorebirdUtil.release(
       buildName: buildName,
       buildNumber: buildNumber,
       platform: 'ios',

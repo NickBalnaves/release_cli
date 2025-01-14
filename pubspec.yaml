@@ -10,12 +10,13 @@ executables:
   release_cli:
 
 dependencies:
-  args: ^2.5.0
-  dart_jsonwebtoken: ^2.14.1
+  args: ^2.6.0
+  crypto: ^3.0.6
+  dart_jsonwebtoken: ^2.14.2
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
   http: ^1.2.2
   xml: ^6.5.0
 
 dev_dependencies:
-  all_lint_rules_community: ^0.0.41
+  all_lint_rules_community: ^0.0.43
