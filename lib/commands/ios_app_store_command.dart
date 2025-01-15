@@ -89,7 +89,10 @@ class IOSAppStoreCommand extends Command {
         'Error fetching commit message: ${latestCommitResult.stderr}',
       );
     }
-    if (!await GitUtil.hasPubspecVersionChanged()) {
+
+    final pubspecVersionChange = await GitUtil.pubspecVersionChange();
+
+    if (pubspecVersionChange == null) {
       await ShorebirdUtil.patch(
         buildName: buildName,
         buildNumber: buildNumber,
@@ -102,7 +105,7 @@ class IOSAppStoreCommand extends Command {
     }
 
     final newBuildPaths = await ShorebirdUtil.release(
-      buildName: buildName,
+      buildName: pubspecVersionChange,
       buildNumber: buildNumber,
       platform: 'ios',
       buildOptions: buildOptions,

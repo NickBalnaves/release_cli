@@ -80,11 +80,13 @@ class AndroidGooglePlayCommand extends Command {
     final buildName = release.buildName;
     final buildNumber = release.buildNumber;
 
-    if (!await GitUtil.hasPubspecVersionChanged()) {
+    final pubspecVersionChange = await GitUtil.pubspecVersionChange();
+
+    if (pubspecVersionChange == null) {
       await ShorebirdUtil.patch(
         buildName: buildName,
         buildNumber: buildNumber,
-        platform: 'ios',
+        platform: 'android',
         buildOptions: buildOptions,
         flutterVersion: flutterVersion,
       );
@@ -93,7 +95,7 @@ class AndroidGooglePlayCommand extends Command {
     }
 
     final newBuildPaths = await ShorebirdUtil.release(
-      buildName: buildName,
+      buildName: pubspecVersionChange,
       buildNumber: buildNumber,
       platform: 'android',
       buildOptions: buildOptions,
