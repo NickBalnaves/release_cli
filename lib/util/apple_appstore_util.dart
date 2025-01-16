@@ -82,8 +82,6 @@ class AppleAppStoreUtil {
         apiKey,
         '--force_for_new_devices',
         'true',
-        '--keychain_password',
-        'default',
       ],
       mode: ProcessStartMode.inheritStdio,
       environment: Platform.environment,
