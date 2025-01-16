@@ -1,3 +1,7 @@
+## 1.0.3
+
+* fix: ios builds not completing on CI platforms.
+
 ## 1.0.2
 
 * fix: patching app store versions.
