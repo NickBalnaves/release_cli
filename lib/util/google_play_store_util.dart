@@ -22,7 +22,7 @@ class GooglePlayStoreUtil {
     }
 
     final content = await file.readAsString();
-    final regex = RegExp(r'applicationId\s+"(.+?)"');
+    final regex = RegExp('applicationId\\s*=?\\s*[\'"](.+?)[\'"]');
     final match = regex.firstMatch(content);
 
     final packageName = match?.group(1);

@@ -1,3 +1,7 @@
+## 1.0.4
+
+* fix: android applicationId regex.
+
 ## 1.0.3
 
 * fix: ios builds not completing on CI platforms.
