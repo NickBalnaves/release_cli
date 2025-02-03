@@ -42,6 +42,10 @@ class IOSAppStoreCommand extends Command {
         'flutterVersion',
         help: 'Flutter version',
         mandatory: true,
+      )
+      ..addOption(
+        'allowAssetDiffs',
+        help: 'Allow asset diffs',
       );
   }
 
@@ -63,6 +67,7 @@ class IOSAppStoreCommand extends Command {
     final gitUrl = results['gitUrl'] as String;
     final buildOptions = results['buildOptions'] as String;
     final flutterVersion = results['flutterVersion'] as String;
+    final allowAssetDiffs = results['allowAssetDiffs'] as bool;
 
     final appleAppStoreUtil = AppleAppStoreUtil(
       issuerId: issuerId,
@@ -99,6 +104,7 @@ class IOSAppStoreCommand extends Command {
         platform: 'ios',
         buildOptions: buildOptions,
         flutterVersion: flutterVersion,
+        allowAssetDiffs: allowAssetDiffs,
       );
 
       return;

@@ -44,6 +44,7 @@ Deploy an Android app to the Google Play Store.
 - `--keyAlias`: Alias for the key in the keystore.
 - `--storeFile`: Path to the keystore file.
 - `--flutterVersion`: Version of Flutter to use.
+- `--allowAssetDiffs`: Allow asset diffs.
 
 ##### 2. `android firebase_app_distribution`
 
@@ -79,6 +80,7 @@ Deploy an iOS app to the Apple App Store.
 - `--gitUrl`: URL to the app's Git repository.
 - `--buildOptions`: Build options for the app.
 - `--flutterVersion`: Version of Flutter to use.
+- `--allowAssetDiffs`: Allow asset diffs.
 
 ##### 2. `ios firebase_app_distribution`
 

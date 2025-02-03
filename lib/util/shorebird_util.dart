@@ -7,6 +7,7 @@ abstract final class ShorebirdUtil {
     required final String platform,
     required final String buildOptions,
     required final String flutterVersion,
+    required final bool allowAssetDiffs,
   }) async {
     stdout.writeln('Starting shorebird patch for $buildName+$buildNumber...');
     final shorebirdPatchProcess = await Process.run(
@@ -17,6 +18,7 @@ abstract final class ShorebirdUtil {
         '--build-name=$buildName',
         '--build-number=$buildNumber',
         '--release-version=$buildName+$buildNumber',
+        if (allowAssetDiffs) '--allow-asset-diffs',
         '--',
         if (platform.contains('ios'))
           '--export-options-plist=ios/exportOptions.plist',
@@ -39,7 +41,9 @@ abstract final class ShorebirdUtil {
     required final String buildOptions,
     required final String flutterVersion,
   }) async {
-    stdout.writeln('Starting shorebird build for $buildName+$buildNumber...');
+    stdout.writeln(
+      'Starting shorebird build for $buildName+${buildNumber + 1}...',
+    );
 
     final buildLocations = <String>[];
     final shorebirdReleaseProcess = await Process.start(

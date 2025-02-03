@@ -1,3 +1,7 @@
+## 1.0.5
+
+* feat: add allowAssetDiffs flag for shorebird patches.
+
 ## 1.0.4
 
 * fix: android applicationId regex.

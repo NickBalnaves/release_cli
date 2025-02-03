@@ -44,6 +44,10 @@ class AndroidGooglePlayCommand extends Command {
         'flutterVersion',
         help: 'Flutter version',
         mandatory: true,
+      )
+      ..addFlag(
+        'allowAssetDiffs',
+        help: 'Allow asset diffs',
       );
   }
 
@@ -64,6 +68,7 @@ class AndroidGooglePlayCommand extends Command {
     final storeFile = results['storeFile'] as String;
     final buildOptions = results['buildOptions'] as String;
     final flutterVersion = results['flutterVersion'] as String;
+    final allowAssetDiffs = results['allowAssetDiffs'] as bool;
 
     await AndroidUtil.configureSigning(
       storePassword: storePassword,
@@ -89,6 +94,7 @@ class AndroidGooglePlayCommand extends Command {
         platform: 'android',
         buildOptions: buildOptions,
         flutterVersion: flutterVersion,
+        allowAssetDiffs: allowAssetDiffs,
       );
 
       return;
