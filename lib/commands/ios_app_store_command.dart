@@ -43,7 +43,7 @@ class IOSAppStoreCommand extends Command {
         help: 'Flutter version',
         mandatory: true,
       )
-      ..addOption(
+      ..addFlag(
         'allowAssetDiffs',
         help: 'Allow asset diffs',
       );

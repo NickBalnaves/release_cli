@@ -1,3 +1,7 @@
+## 1.0.6
+
+* fix: allowAssetDiffs ios flag.
+
 ## 1.0.5
 
 * feat: add allowAssetDiffs flag for shorebird patches.
