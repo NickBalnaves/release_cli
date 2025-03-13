@@ -21,12 +21,15 @@ abstract final class AndroidUtil {
   }
 
   static Future<String?> createBuild({
-    required final String buildName,
     required final int buildNumber,
     required final String buildOptions,
+    final String? buildName,
   }) async {
-    stdout
-        .writeln('Starting flutter build for $buildName+${buildNumber + 1}...');
+    stdout.writeln(
+      'Starting flutter build for '
+      '${buildName != null ? '$buildName+' : ''}'
+      '${buildNumber + 1}...',
+    );
     String? buildLocation;
 
     final process = await Process.start(
@@ -34,7 +37,7 @@ abstract final class AndroidUtil {
       [
         'build',
         'appbundle',
-        '--build-name=$buildName',
+        if (buildName != null) '--build-name=$buildName',
         '--build-number=${buildNumber + 1}',
         ...buildOptions.split(' '),
       ],

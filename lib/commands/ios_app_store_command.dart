@@ -82,19 +82,6 @@ class IOSAppStoreCommand extends Command {
     final buildName = release.buildName;
     final buildNumber = release.buildNumber;
 
-    final latestCommitResult = await Process.run(
-      'git',
-      ["show HEAD -- pubspec.yaml | grep '^+version: '"],
-    );
-
-    if (latestCommitResult.exitCode == 0) {
-      stdout.writeln('Latest commit message: ${latestCommitResult.stdout}');
-    } else {
-      stdout.writeln(
-        'Error fetching commit message: ${latestCommitResult.stderr}',
-      );
-    }
-
     final pubspecVersionChange = await GitUtil.pubspecVersionChange();
 
     if (pubspecVersionChange == null) {

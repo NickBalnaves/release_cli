@@ -95,11 +95,9 @@ class IOSFirebaseAppDistributionCommand extends Command {
 
     final release =
         await firebaseAppDistributionUtil.latestRelease(authClient: authClient);
-    final buildName = release.buildName;
     final buildNumber = release.buildNumber;
 
     final newBuildPath = await IOSUtil.createBuild(
-      buildName: buildName,
       buildNumber: buildNumber,
       buildOptions: buildOptions,
     );

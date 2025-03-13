@@ -136,6 +136,7 @@ class AppleAppStoreUtil {
       await file.create(recursive: true);
       await file.writeAsString(privateKey);
     }
+    stdout.writeln('Uploading build from $filePath...');
     final result = await Process.run('xcrun', [
       'altool',
       '--upload-app',

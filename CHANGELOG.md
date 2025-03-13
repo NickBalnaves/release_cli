@@ -1,3 +1,7 @@
+## 1.0.7
+
+* fix: firebase build version in sync
+
 ## 1.0.6
 
 * fix: allowAssetDiffs ios flag.

@@ -4,20 +4,23 @@ import 'package:xml/xml.dart';
 
 abstract final class IOSUtil {
   static Future<String?> createBuild({
-    required final String buildName,
     required final int buildNumber,
     required final String buildOptions,
+    final String? buildName,
   }) async {
     String? buildLocation;
 
-    stdout
-        .writeln('Starting flutter build for $buildName+${buildNumber + 1}...');
+    stdout.writeln(
+      'Starting flutter build for '
+      '${buildName != null ? '$buildName+' : ''}'
+      '${buildNumber + 1}...',
+    );
     final process = await Process.start(
       'flutter',
       [
         'build',
         'ipa',
-        '--build-name=$buildName',
+        if (buildName != null) '--build-name=$buildName',
         '--build-number=${buildNumber + 1}',
         '--export-options-plist=ios/exportOptions-adhoc.plist',
         ...buildOptions.split(' '),
