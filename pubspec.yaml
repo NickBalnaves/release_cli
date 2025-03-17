@@ -1,6 +1,6 @@
 name: release_cli
 description: 'A comprehensive CLI tool for streamlining the release process of mobile and web applications across multiple platforms.'
-version: 1.0.7
+version: 1.0.8
 repository: https://github.com/NickBalnaves/release_cli
 
 environment:

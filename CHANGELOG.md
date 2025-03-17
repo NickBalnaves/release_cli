@@ -1,3 +1,7 @@
+## 1.0.8
+
+* fix: build location for android shorebird builds
+
 ## 1.0.7
 
 * fix: firebase build version in sync

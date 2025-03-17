@@ -45,7 +45,6 @@ abstract final class ShorebirdUtil {
       'Starting shorebird build for $buildName+${buildNumber + 1}...',
     );
 
-    final buildLocations = <String>[];
     final shorebirdReleaseProcess = await Process.start(
       'shorebird',
       [
@@ -65,14 +64,6 @@ abstract final class ShorebirdUtil {
         .transform(const SystemEncoding().decoder)
         .listen((final data) {
       stdout.write(data);
-      final matches = RegExp(r'(/[\w/.-]+\.(aab|ipa))')
-          .allMatches(data)
-          .map((final match) => match.group(1));
-      for (final match in matches) {
-        if (match != null) {
-          buildLocations.add(match);
-        }
-      }
     });
     shorebirdReleaseProcess.stderr
         .transform(const SystemEncoding().decoder)
@@ -83,25 +74,22 @@ abstract final class ShorebirdUtil {
     if (shorebirdReleaseProcessExitCode != 0) {
       exit(1);
     }
-    if (buildLocations.isEmpty) {
-      stdout.writeln(
-        'No build location in output. Looking for it in build folder...',
-      );
-      final buildFiles = Directory('build').listSync(recursive: true).where(
-            (final file) =>
-                (platform.contains('ios') && file.path.contains('.ipa')) ||
-                (platform.contains('android') && file.path.contains('.aab')),
-          );
-      if (buildFiles.isEmpty) {
-        stderr.writeln('No build files found in build folder.');
-        exit(1);
-      }
-      stdout.writeln(
-        'Found build files ${buildFiles.map((final file) => file.path)}',
-      );
-      buildLocations.addAll(buildFiles.map((final file) => file.path));
-    }
 
-    return buildLocations;
+    final buildFiles = Directory('build').listSync(recursive: true).where(
+          (final file) =>
+              (platform.contains('ios') && file.path.contains('.ipa')) ||
+              (platform.contains('android') &&
+                  file.path.contains('.aab') &&
+                  !file.path.contains('intermediary')),
+        );
+    if (buildFiles.isEmpty) {
+      stderr.writeln('No build files found in build folder.');
+      exit(1);
+    }
+    stdout.writeln(
+      'Found build files ${buildFiles.map((final file) => file.path)}',
+    );
+
+    return [for (final file in buildFiles) file.path];
   }
 }
