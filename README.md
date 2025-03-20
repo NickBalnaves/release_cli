@@ -35,6 +35,10 @@ This is the parent command for Android-specific deployments. It includes the fol
 
 Deploy an Android app to the Google Play Store.
 
+**Prerequisites:**
+
+- `SHOREBIRD_TOKEN` environment variable exported for shorebird releases.
+
 **Required Options:**
 
 - `--serviceAccount`: Service account JSON.
@@ -67,9 +71,20 @@ Deploy an Android app to Firebase App Distribution.
 
 This is the parent command for iOS-specific deployments. It includes the following subcommands:
 
+**Prerequisites:**
+
+- Automatic signing enabled.
+- `fastlane` installed.
+- `MATCH_PASSWORD` environment variable exported for fastlane match.
+
 ##### 1. `ios app_store`
 
 Deploy an iOS app to the Apple App Store.
+
+**Prerequisites:**
+
+- Filled in `exportOptions.plist` file in the ios folder.
+- `SHOREBIRD_TOKEN` environment variable exported for shorebird releases.
 
 **Required Options:**
 
@@ -85,6 +100,10 @@ Deploy an iOS app to the Apple App Store.
 ##### 2. `ios firebase_app_distribution`
 
 Deploy an iOS app to Firebase App Distribution.
+
+**Prerequisites:**
+
+- Filled in `exportOptions-adhoc.plist` file in the ios folder.
 
 **Required Options:**
 
@@ -113,3 +132,9 @@ Deploy a web app to Firebase Hosting.
 - `--projectId`: Firebase project ID.
 - `--serviceAccount`: Path to the Firebase service account.
 - `--buildOptions`: Build options for the app.
+
+## Environment Variables
+
+You can expose the following environment variable to enable additional functionality:
+
+- `SLACK_WEBHOOK_URL_ERROR`: Set this to a Slack Incoming Webhook URL to send error notifications to a Slack channel.

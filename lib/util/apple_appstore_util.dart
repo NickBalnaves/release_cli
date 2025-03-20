@@ -89,7 +89,9 @@ class AppleAppStoreUtil {
 
     final exitCode = await fastlaneMatchProcess.exitCode;
     if (exitCode != 0) {
-      exit(1);
+      throw Exception(
+        'Error configuring signing for iOS app. ${fastlaneMatchProcess.stderr}',
+      );
     }
   }
 
@@ -118,7 +120,7 @@ class AppleAppStoreUtil {
     }
 
     logHttpResponse(response);
-    exit(1);
+    throw Exception('Error fetching latest release.');
   }
 
   Future<void> uploadBuild({
@@ -151,8 +153,7 @@ class AppleAppStoreUtil {
     ]);
 
     if (result.exitCode != 0) {
-      stderr.writeln(result.stderr);
-      exit(1);
+      throw Exception('Error uploading build to TestFlight. ${result.stderr}');
     }
     stdout.writeln('Uploaded to TestFlight successfully.');
   }

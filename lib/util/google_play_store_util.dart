@@ -17,8 +17,7 @@ class GooglePlayStoreUtil {
     final file = File('android/app/build.gradle');
 
     if (!file.existsSync()) {
-      stderr.writeln('build.gradle file not found!');
-      exit(1);
+      throw Exception('build.gradle file not found!');
     }
 
     final content = await file.readAsString();
@@ -27,8 +26,7 @@ class GooglePlayStoreUtil {
 
     final packageName = match?.group(1);
     if (packageName == null) {
-      stderr.writeln('Application ID not found in build.gradle');
-      exit(1);
+      throw Exception('Application ID not found in build.gradle');
     }
 
     return packageName;
@@ -76,8 +74,7 @@ class GooglePlayStoreUtil {
 
       return const Release(buildName: '1.0.0', buildNumber: 0);
     } catch (error) {
-      stderr.writeln(error);
-      exit(1);
+      rethrow;
     } finally {
       client.close();
     }
@@ -99,8 +96,7 @@ class GooglePlayStoreUtil {
       final edit = await androidPublisher.edits.insert(AppEdit(), packageName);
       final editId = edit.id;
       if (editId == null) {
-        stderr.writeln('Edit ID not found.');
-        exit(1);
+        throw Exception('Edit ID not found.');
       }
 
       final file = File(filePath);
@@ -128,8 +124,7 @@ class GooglePlayStoreUtil {
       await androidPublisher.edits.commit(packageName, editId);
       stdout.writeln('Edit committed successfully');
     } catch (error) {
-      stderr.writeln(error);
-      exit(1);
+      rethrow;
     } finally {
       client.close();
     }

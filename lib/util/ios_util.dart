@@ -66,12 +66,11 @@ abstract final class IOSUtil {
 
     final exitCode = await process.exitCode;
     if (exitCode != 0) {
-      exit(1);
+      throw Exception('Error building iOS app. ${process.stderr}');
     }
 
     if (buildLocation == null) {
-      stderr.writeln('Build location not found.');
-      exit(1);
+      throw Exception('Build location not found.');
     }
 
     return buildLocation;

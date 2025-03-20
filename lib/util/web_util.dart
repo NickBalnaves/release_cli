@@ -26,7 +26,7 @@ abstract final class WebUtil {
 
     final exitCode = await process.exitCode;
     if (exitCode != 0) {
-      exit(1);
+      throw Exception('Error running flutter build. ${process.stderr}');
     }
 
     return 'build/web';

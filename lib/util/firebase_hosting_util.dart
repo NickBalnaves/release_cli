@@ -42,7 +42,7 @@ class FirebaseHostingUtil {
 
     if (versionResponse.statusCode != 200) {
       logHttpResponse(versionResponse);
-      exit(1);
+      throw Exception('Error creating version.');
     }
     final versionData =
         json.decode(versionResponse.body) as Map<String, dynamic>;
@@ -74,7 +74,7 @@ class FirebaseHostingUtil {
 
     if (populateResponse.statusCode != 200) {
       logHttpResponse(populateResponse);
-      exit(1);
+      throw Exception('Error populating release.');
     }
 
     final releaseData =
@@ -125,7 +125,7 @@ class FirebaseHostingUtil {
 
     if (finalizeResponse.statusCode != 200) {
       logHttpResponse(finalizeResponse);
-      exit(1);
+      throw Exception('Error finalizing deployment.');
     }
 
     stdout.writeln('Releasing...');
@@ -143,7 +143,7 @@ class FirebaseHostingUtil {
 
     if (releaseResponse.statusCode != 200) {
       logHttpResponse(releaseResponse);
-      exit(1);
+      throw Exception('Error releasing version.');
     }
 
     stdout.writeln('🎉 Deployment completed successfully!\n'

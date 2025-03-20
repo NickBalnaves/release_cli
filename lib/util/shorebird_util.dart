@@ -29,8 +29,9 @@ abstract final class ShorebirdUtil {
     final shorebirdPatchProcessExitCode = shorebirdPatchProcess.exitCode;
     stdout.writeln(shorebirdPatchProcess.stdout);
     if (shorebirdPatchProcessExitCode != 0) {
-      stderr.writeln("Couldn't patch shorebird build.");
-      exit(1);
+      throw Exception(
+        'Error running shorebird patch: ${shorebirdPatchProcess.stderr}',
+      );
     }
   }
 
@@ -72,7 +73,9 @@ abstract final class ShorebirdUtil {
     final shorebirdReleaseProcessExitCode =
         await shorebirdReleaseProcess.exitCode;
     if (shorebirdReleaseProcessExitCode != 0) {
-      exit(1);
+      throw Exception(
+        'Error running shorebird release: ${shorebirdReleaseProcess.stderr}',
+      );
     }
 
     final buildFiles = Directory('build').listSync(recursive: true).where(
@@ -83,8 +86,7 @@ abstract final class ShorebirdUtil {
                   !file.path.contains('intermediary')),
         );
     if (buildFiles.isEmpty) {
-      stderr.writeln('No build files found in build folder.');
-      exit(1);
+      throw Exception('No build files found in build folder.');
     }
     stdout.writeln(
       'Found build files ${buildFiles.map((final file) => file.path)}',

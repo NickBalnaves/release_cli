@@ -38,7 +38,7 @@ class FirebaseAppDistributionUtil {
 
     if (response.statusCode != 200) {
       logHttpResponse(response);
-      exit(1);
+      throw Exception('Error fetching latest release.');
     }
     final data = json.decode(response.body) as Map<String, dynamic>?;
     final releases = data?['releases'] as List?;
@@ -69,7 +69,7 @@ class FirebaseAppDistributionUtil {
 
     if (uploadResponse.statusCode != 200) {
       logHttpResponse(uploadResponse);
-      exit(1);
+      throw Exception('Error uploading build to firebase app distribution.');
     }
     final operationUrl =
         (jsonDecode(uploadResponse.body) as Map?)?['name'] as String?;
@@ -92,20 +92,21 @@ class FirebaseAppDistributionUtil {
             releaseId = (release['name'] as String?)?.split('/').last;
             stdout.writeln('Release completed successfully');
             if (releaseId == null) {
-              stderr.writeln('Release ID not found.');
-              exit(1);
+              throw Exception('Release ID not found.');
             }
             stdout.writeln('Release ID: $releaseId');
           } else if (error != null) {
-            stderr.writeln('Error: ${error['message']}');
-            exit(1);
+            throw Exception(
+              'Error uploading build to firebase app distribution. '
+              '${error['message']}',
+            );
           }
           break;
         }
         stdout.writeln('Polling... Operation still in progress.');
       } else {
         logHttpResponse(uploadBuildUrl);
-        exit(1);
+        throw Exception('Error polling operation.');
       }
     }
     stdout.writeln('Uploaded to firebase app distribution successfully.');
@@ -132,7 +133,7 @@ class FirebaseAppDistributionUtil {
 
     if (updateReleaseResponse.statusCode != 200) {
       logHttpResponse(updateReleaseResponse);
-      exit(1);
+      throw Exception('Error updating release notes.');
     }
     stdout.writeln('Updated release notes successfully.');
 
@@ -145,7 +146,7 @@ class FirebaseAppDistributionUtil {
 
     if (distributeReleaseResponse.statusCode != 200) {
       logHttpResponse(distributeReleaseResponse);
-      exit(1);
+      throw Exception('Error distributing release.');
     }
     stdout.writeln('Distributed release successfully.');
   }

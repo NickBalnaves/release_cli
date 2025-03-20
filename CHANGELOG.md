@@ -1,3 +1,7 @@
+## 1.1.0
+
+* feat: slack error notifications.
+
 ## 1.0.9
 
 * chore: increase pub.dev score.
