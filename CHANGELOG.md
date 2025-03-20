@@ -1,10 +1,14 @@
+## 1.0.9
+
+* chore: increase pub.dev score.
+
 ## 1.0.8
 
-* fix: build location for android shorebird builds
+* fix: build location for android shorebird builds.
 
 ## 1.0.7
 
-* fix: firebase build version in sync
+* fix: firebase build version in sync.
 
 ## 1.0.6
 
