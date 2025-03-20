@@ -15,6 +15,7 @@ abstract final class IOSUtil {
       '${buildName != null ? '$buildName+' : ''}'
       '${buildNumber + 1}...',
     );
+    throw Exception('test ios exception');
     final process = await Process.start(
       'flutter',
       [

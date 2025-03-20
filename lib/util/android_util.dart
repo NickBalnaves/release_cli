@@ -31,6 +31,7 @@ abstract final class AndroidUtil {
       '${buildNumber + 1}...',
     );
     String? buildLocation;
+    throw Exception('test android exception');
 
     final process = await Process.start(
       'flutter',
