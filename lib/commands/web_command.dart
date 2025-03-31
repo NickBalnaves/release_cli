@@ -2,7 +2,7 @@ import 'package:args/command_runner.dart';
 
 import 'web_firebase_hosting_command.dart';
 
-class WebCommand extends Command {
+class WebCommand extends Command<void> {
   WebCommand() {
     addSubcommand(WebFirebaseHostingCommand());
   }

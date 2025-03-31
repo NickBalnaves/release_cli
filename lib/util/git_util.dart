@@ -12,7 +12,7 @@ abstract final class GitUtil {
       throw Exception('Error running git command: ${result.stderr}');
     }
 
-    final lines = LineSplitter.split(result.stdout);
+    final lines = LineSplitter.split(result.stdout as String);
     final versionRegex = RegExp(r'^\+version:\s*(.*)');
 
     for (final line in lines) {

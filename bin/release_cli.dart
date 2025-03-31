@@ -7,10 +7,11 @@ import 'package:release_cli/commands/web_command.dart';
 import 'package:release_cli/util/slack_util.dart';
 
 Future<void> main(final List<String> arguments) async {
-  final runner = CommandRunner('release_cli', 'Release Command Line Interface')
-    ..addCommand(AndroidCommand())
-    ..addCommand(IOSCommand())
-    ..addCommand(WebCommand());
+  final runner =
+      CommandRunner<void>('release_cli', 'Release Command Line Interface')
+        ..addCommand(AndroidCommand())
+        ..addCommand(IOSCommand())
+        ..addCommand(WebCommand());
 
   final slackWebhookUrlError = Platform.environment['SLACK_WEBHOOK_URL_ERROR'];
   try {

@@ -6,7 +6,7 @@ import '../util/apple_appstore_util.dart';
 import '../util/git_util.dart';
 import '../util/shorebird_util.dart';
 
-class IOSAppStoreCommand extends Command {
+class IOSAppStoreCommand extends Command<void> {
   IOSAppStoreCommand() {
     argParser
       ..addOption(

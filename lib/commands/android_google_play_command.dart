@@ -7,7 +7,7 @@ import '../util/git_util.dart';
 import '../util/google_play_store_util.dart';
 import '../util/shorebird_util.dart';
 
-class AndroidGooglePlayCommand extends Command {
+class AndroidGooglePlayCommand extends Command<void> {
   AndroidGooglePlayCommand() {
     argParser
       ..addOption(

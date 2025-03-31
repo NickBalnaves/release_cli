@@ -80,10 +80,10 @@ class FirebaseHostingUtil {
     final releaseData =
         json.decode(populateResponse.body) as Map<String, dynamic>;
     final uploadUrl = releaseData['uploadUrl'];
-    final uploadRequiredHashes = releaseData['uploadRequiredHashes'];
+    final uploadRequiredHashes = releaseData['uploadRequiredHashes'] as List;
 
     stdout.writeln('Uploading files...');
-    final uploadTasks = <Future>[];
+    final uploadTasks = <Future<void>>[];
 
     for (final hash in uploadRequiredHashes) {
       final filePath =

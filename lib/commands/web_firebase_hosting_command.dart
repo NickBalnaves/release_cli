@@ -5,7 +5,7 @@ import 'package:args/command_runner.dart';
 import '../util/firebase_hosting_util.dart';
 import '../util/web_util.dart';
 
-class WebFirebaseHostingCommand extends Command {
+class WebFirebaseHostingCommand extends Command<void> {
   WebFirebaseHostingCommand() {
     argParser
       ..addOption(

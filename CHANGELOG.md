@@ -1,6 +1,7 @@
 ## 1.1.1
 
 * fix: remove icon tree shaking from shorebird builds.
+* chore: add analysis strict types.
 
 ## 1.1.0
 

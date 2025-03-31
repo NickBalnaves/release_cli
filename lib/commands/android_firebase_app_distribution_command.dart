@@ -5,7 +5,7 @@ import 'package:args/command_runner.dart';
 import '../util/android_util.dart';
 import '../util/firebase_app_distribution_util.dart';
 
-class AndroidFirebaseAppDistributionCommand extends Command {
+class AndroidFirebaseAppDistributionCommand extends Command<void> {
   AndroidFirebaseAppDistributionCommand() {
     argParser
       ..addOption(

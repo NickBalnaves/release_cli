@@ -6,7 +6,7 @@ import '../util/apple_appstore_util.dart';
 import '../util/firebase_app_distribution_util.dart';
 import '../util/ios_util.dart';
 
-class IOSFirebaseAppDistributionCommand extends Command {
+class IOSFirebaseAppDistributionCommand extends Command<void> {
   IOSFirebaseAppDistributionCommand() {
     argParser
       ..addOption(
