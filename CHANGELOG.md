@@ -1,3 +1,7 @@
+## 1.1.1
+
+* fix: remove icon tree shaking from shorebird builds.
+
 ## 1.1.0
 
 * feat: slack error notifications.

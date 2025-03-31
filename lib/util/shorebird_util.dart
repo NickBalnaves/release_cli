@@ -22,6 +22,7 @@ abstract final class ShorebirdUtil {
         '--',
         if (platform.contains('ios'))
           '--export-options-plist=ios/exportOptions.plist',
+        '--no-tree-shake-icons',
         ...buildOptions.split(' '),
       ],
     );
@@ -57,6 +58,7 @@ abstract final class ShorebirdUtil {
         '--',
         if (platform.contains('ios'))
           '--export-options-plist=ios/exportOptions.plist',
+        '--no-tree-shake-icons',
         ...buildOptions.split(' '),
       ],
     );
