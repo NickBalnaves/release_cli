@@ -97,6 +97,10 @@ Deploy an iOS app to the Apple App Store.
 - `--flutterVersion`: Version of Flutter to use.
 - `--allowAssetDiffs`: Allow asset diffs.
 
+**Optional Flags:**
+
+- `--forceCertRenewal`: Forces `fastlane match` to attempt renewal of certificates/profiles (adds `--force` to the initial run) and enables an automatic retry if output indicates an expired certificate or provisioning profile.
+
 ##### 2. `ios firebase_app_distribution`
 
 Deploy an iOS app to Firebase App Distribution.
@@ -116,6 +120,10 @@ Deploy an iOS app to Firebase App Distribution.
 - `--gitUrl`: URL to the app's Git repository.
 - `--buildOptions`: Build options for the app.
 - `--testerGroups`: Tester groups to invite for app testing.
+
+**Optional Flags:**
+
+- `--forceCertRenewal`: Forces `fastlane match` to attempt renewal of certificates/profiles (adds `--force` to the initial run) and enables an automatic retry if output indicates an expired certificate or provisioning profile.
 
 ### Web
 

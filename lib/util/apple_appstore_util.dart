@@ -35,6 +35,7 @@ class AppleAppStoreUtil {
   Future<void> configureSigning({
     required final String gitUrl,
     final bool isAdhoc = false,
+    final bool force = false,
   }) async {
     final bundleId = File('ios/Runner.xcodeproj/project.pbxproj')
         .readAsStringSync()
@@ -46,52 +47,53 @@ class AppleAppStoreUtil {
         .replaceAll(';', '')
         .trim();
     final projectFile = File('ios/Runner.xcodeproj/project.pbxproj');
-    projectFile.writeAsStringSync(
-      projectFile
-          .readAsStringSync()
-          .replaceAll(
-            'CODE_SIGN_IDENTITY = "Apple Development";',
-            'CODE_SIGN_IDENTITY = "iPhone Distribution";',
-          )
-          .replaceAll(
-            'CODE_SIGN_STYLE = Automatic;',
-            'CODE_SIGN_STYLE = Manual;',
-          )
-          .replaceAll(
-            'PROVISIONING_PROFILE_SPECIFIER = "";',
-            'PROVISIONING_PROFILE_SPECIFIER = "match '
-                '${isAdhoc ? 'AdHoc' : 'AppStore'} '
-                '$bundleId";',
-          ),
-    );
+    // Update project file for manual distribution signing. Prefer modern
+    // identity label "Apple Distribution" over legacy "iPhone Distribution".
+    final updatedProject = projectFile
+        .readAsStringSync()
+        .replaceAll(
+          'CODE_SIGN_IDENTITY = "Apple Development";',
+          'CODE_SIGN_IDENTITY = "Apple Distribution";',
+        )
+        .replaceAll(
+          'CODE_SIGN_STYLE = Automatic;',
+          'CODE_SIGN_STYLE = Manual;',
+        )
+        .replaceAll(
+          'PROVISIONING_PROFILE_SPECIFIER = "";',
+          'PROVISIONING_PROFILE_SPECIFIER = "match '
+              '${isAdhoc ? 'AdHoc' : 'AppStore'} '
+              '$bundleId";',
+        );
+    projectFile.writeAsStringSync(updatedProject);
 
     final apiKey = '{"key_id": "$_keyId", '
         '"issuer_id": "$_issuerId", '
         '"key": "${_privateKey.replaceAll('\n', r'\n')}", '
         '"in_house": false }';
-    final fastlaneMatchProcess = await Process.start(
+    final args = [
+      'match',
+      if (isAdhoc) 'adhoc' else 'appstore',
+      '--app_identifier',
+      bundleId,
+      '--git_url',
+      gitUrl,
+      '--api_key',
+      apiKey,
+      '--force_for_new_devices',
+      'true',
+      if (force) '--force',
+    ];
+    stdout.writeln('Running fastlane ${args.join(' ')}');
+    final process = await Process.start(
       'fastlane',
-      [
-        'match',
-        if (isAdhoc) 'adhoc' else 'appstore',
-        '--app_identifier',
-        bundleId,
-        '--git_url',
-        gitUrl,
-        '--api_key',
-        apiKey,
-        '--force_for_new_devices',
-        'true',
-      ],
+      args,
       mode: ProcessStartMode.inheritStdio,
       environment: Platform.environment,
     );
-
-    final exitCode = await fastlaneMatchProcess.exitCode;
+    final exitCode = await process.exitCode;
     if (exitCode != 0) {
-      throw Exception(
-        'Error configuring signing for iOS app. ${fastlaneMatchProcess.stderr}',
-      );
+      throw Exception('Error configuring signing for iOS app.');
     }
   }
 

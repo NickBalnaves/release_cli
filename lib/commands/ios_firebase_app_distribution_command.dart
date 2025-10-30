@@ -53,6 +53,10 @@ class IOSFirebaseAppDistributionCommand extends Command<void> {
         'testerGroups',
         help: 'Tester groups',
         mandatory: true,
+      )
+      ..addFlag(
+        'forceCertRenewal',
+        help: 'Force fastlane match to renew certificates/profiles (adds --force and enables auto retry on expiration detection)',
       );
   }
 
@@ -84,7 +88,13 @@ class IOSFirebaseAppDistributionCommand extends Command<void> {
       appId: appId,
     );
 
-    await appleAppStoreUtil.configureSigning(gitUrl: gitUrl, isAdhoc: true);
+    final forceCertRenewal = results['forceCertRenewal'] as bool;
+
+    await appleAppStoreUtil.configureSigning(
+      gitUrl: gitUrl,
+      isAdhoc: true,
+      force: forceCertRenewal,
+    );
 
     final firebaseAppDistributionUtil = FirebaseAppDistributionUtil(
       serviceAccount: serviceAccount,

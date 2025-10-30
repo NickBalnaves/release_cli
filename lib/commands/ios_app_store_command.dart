@@ -46,6 +46,10 @@ class IOSAppStoreCommand extends Command<void> {
       ..addFlag(
         'allowAssetDiffs',
         help: 'Allow asset diffs',
+      )
+      ..addFlag(
+        'forceCertRenewal',
+        help: 'Force fastlane match to renew certificates/profiles (adds --force and enables auto retry on expiration detection)',
       );
   }
 
@@ -76,7 +80,9 @@ class IOSAppStoreCommand extends Command<void> {
       appId: appId,
     );
 
-    await appleAppStoreUtil.configureSigning(gitUrl: gitUrl);
+    final forceCertRenewal = results['forceCertRenewal'] as bool;
+
+    await appleAppStoreUtil.configureSigning(gitUrl: gitUrl, force: forceCertRenewal);
 
     final release = await appleAppStoreUtil.latestRelease();
     final buildName = release.buildName;
